@@ -6,7 +6,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* Habilitando o uso do css do stitches mesmo com o JS desabilitado */}
-        <style id="stitches" dangerouslySetInnerHTML={{__html: getCssText()}}/>
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
       </Head>
       <body>
         <Main />
