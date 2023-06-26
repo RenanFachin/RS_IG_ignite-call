@@ -1,9 +1,16 @@
 import type { AppProps } from 'next/app'
 import { globalStyles } from '../styles/global'
 
+import { Roboto_Flex as Roboto } from 'next/font/google'
+const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
+
 // Executando a função de estilos globais
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <div className={`${roboto.variable} font-sans`}>
+      <Component {...pageProps} />
+    </div>
+  )
 }
