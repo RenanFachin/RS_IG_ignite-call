@@ -14,6 +14,19 @@ export default async function handler(
   // Agora sabendo que a rota é do tipo POST, persistir o usuário no db
   const { name, username } = request.body
 
+  // Validando se o usuário já existe no db
+  const userExists = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  })
+
+  if (userExists) {
+    return response.status(400).json({
+      message: 'username already taken.',
+    })
+  }
+
   const user = await prisma.user.create({
     data: {
       name,
