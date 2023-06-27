@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { api } from '@/src/lib/axios'
 
 // Schema dos campos do formulário
 const registerFormSchema = z.object({
@@ -36,6 +37,7 @@ export default function Register() {
   // Recebendo o queryParams do redirecionamento do usuário
   const router = useRouter()
 
+  // Definindo um valor default para o input - utilizando o queryParams enviado pelo redirecionamento do usuário
   useEffect(() => {
     if (router.query.username) {
       setValue('username', String(router.query.username))
@@ -43,7 +45,15 @@ export default function Register() {
   }, [router.query?.username, setValue])
 
   async function handleRegister(data: RegisterFormData) {
-    console.log(data)
+    try {
+      // Criando o usuário
+      await api.post('/users', {
+        name: data.name,
+        username: data.username,
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
