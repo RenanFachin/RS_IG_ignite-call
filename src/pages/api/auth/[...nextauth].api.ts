@@ -17,5 +17,20 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
+  callbacks: {
+    async signIn({ account }) {
+      // Dentro do account teremos acesso as permissões que o usuário deu para a aplicação
+      if (!account?.scope?.includes(`${userInfoCalendar}`)) {
+        // Caso ele não tenha dado a permissão - Retornar para a página de registro
+        return '/register/connect-calendar/?error=permissions'
+
+        // Enviando um query params para sinalizar que deu um erro
+      }
+
+      // Precisamos retornar um true para deixar a autenticação seguir o fluxo
+      return true
+    },
+  },
 }
 export default NextAuth(authOptions)
