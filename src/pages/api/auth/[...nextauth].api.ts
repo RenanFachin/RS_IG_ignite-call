@@ -50,6 +50,15 @@ export function buildNextAuthOptions(
         // Precisamos retornar um true para deixar a autenticação seguir o fluxo
         return true
       },
+
+      // função para modificar os dados contidos na session
+      async session({ session, user }) {
+        return {
+          ...session,
+          // substituindo as informações do usuário, passando mais do que só o nome e o email para que o front-end tenha acesso a mais informações
+          user,
+        }
+      },
     },
   }
 }
