@@ -8,23 +8,46 @@ import {
   CalendarTitle,
 } from './styles'
 import { getWeekDays } from '@/src/utils/get-week-days'
+import { useState } from 'react'
+import dayjs from 'dayjs'
 
 export function Calendar() {
+  const [currentDate, setCurrentDate] = useState(() => {
+    // Iniciando o state com o mês atual
+    return dayjs().set('date', 1)
+  })
+
+  // Transformando o nome do mês e ano
+  const currentMonth = currentDate.format('MMMM')
+  const currentYer = currentDate.format('YYYY')
+
+  function handlePreviousMonth() {
+    const previousMonthDate = currentDate.subtract(1, 'month')
+
+    setCurrentDate(previousMonthDate)
+  }
+
+  function handlNextMonth() {
+    const previousMonthDate = currentDate.add(1, 'month')
+
+    setCurrentDate(previousMonthDate)
+  }
+
   const shortWeekDays = getWeekDays({ short: true })
 
   return (
     <CalendarContainer>
       <CalendarHeader>
         <CalendarTitle>
-          Julho <span>2023</span>
+          {currentMonth} <span>{currentYer}</span>
         </CalendarTitle>
 
         <CalendarActions>
-          <button>
+          <button onClick={handlePreviousMonth} title="Previous month">
             <CaretLeft />
           </button>
 
-          <button>
+          <button onClick={handlNextMonth} title="Next month">
             <CaretRight />
           </button>
         </CalendarActions>
