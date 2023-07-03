@@ -2,6 +2,7 @@ import { Avatar, Heading, Text } from '@ignite-ui/react'
 import { Container, UserHeader } from './styles'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { prisma } from '@/src/lib/prisma'
+import { ScheduleForm } from './ScheduleForm/ConfirmStep'
 
 interface ScheduleProps {
   user: {
@@ -19,6 +20,8 @@ export default function Schedule({ user }: ScheduleProps) {
         <Heading>{user.name}</Heading>
         <Text>{user.bio}</Text>
       </UserHeader>
+
+      <ScheduleForm />
     </Container>
   )
 }
@@ -27,7 +30,7 @@ export default function Schedule({ user }: ScheduleProps) {
 // Obrigado informar quando temos uma rota parametrizada
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    // paths vazio para não gerar nenhuma página de mandeira estática
+    // paths vazio para não gerar nenhuma página de maneira estática
     paths: [],
     fallback: 'blocking',
   }
