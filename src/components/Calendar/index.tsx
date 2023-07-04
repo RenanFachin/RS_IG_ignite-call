@@ -75,6 +75,10 @@ export function Calendar({ onDateSelected, selectedDate }: CalendarProps) {
 
   // [ [1,2,3] [4,5,6,7,8,9,10]] -> cada posição do array é uma semana contendo os dias
   const calendarWeeks = useMemo(() => {
+    if (!blockedDates) {
+      return []
+    }
+
     // total de dias no mês atual
     const daysInMonthArray = Array.from({
       length: currentDate.daysInMonth(),
