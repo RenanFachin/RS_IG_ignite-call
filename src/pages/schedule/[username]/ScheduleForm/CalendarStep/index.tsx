@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { api } from '@/src/lib/axios'
 import { useRouter } from 'next/router'
+import { useQuery } from '@tanstack/react-query'
 
 interface Availability {
   possibleTimes: number[]
@@ -18,7 +19,7 @@ interface Availability {
 
 export function CalendarStep() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [availability, setAvailability] = useState<Availability | null>(null)
+  // const [availability, setAvailability] = useState<Availability | null>(null)
 
   // Pegando o username da rota
   const router = useRouter()
@@ -32,22 +33,26 @@ export function CalendarStep() {
     ? dayjs(selectedDate).format('DD[ de ]MMMM')
     : null
 
-  // Carregando dados da api toda vez que o valor de selectedDate mudar
-  useEffect(() => {
-    if (!selectedDate) {
-      return
-    }
+  const selectedDateWithoutTime = selectedDate
+    ? dayjs(selectedDate).format('YYYY-MM-DD')
+    : null
 
-    api
-      .get(`/users/${username}/availability`, {
+  const { data: availability } = useQuery<Availability>(
+    ['availability', selectedDateWithoutTime],
+    async () => {
+      const response = await api.get(`/users/${username}/availability`, {
         params: {
-          date: dayjs(selectedDate).format('YYYY-MM-DD'),
+          date: selectedDateWithoutTime,
         },
       })
-      .then((response) => {
-        setAvailability(response.data)
-      })
-  }, [selectedDate, username])
+
+      return response.data
+    },
+    {
+      // Terceiro parâmetro é para somente executar quando tiver algo em selecteDate
+      enabled: !!selectedDate,
+    },
+  )
 
   return (
     <Container isTimePickerOpen={isDateSelected}>
