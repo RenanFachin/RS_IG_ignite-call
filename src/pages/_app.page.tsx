@@ -7,6 +7,7 @@ import { globalStyles } from '../styles/global'
 import { Roboto_Flex as Roboto } from 'next/font/google'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from '../lib/react-query'
+import { DefaultSeo } from 'next-seo'
 const roboto = Roboto({ subsets: ['latin'], variable: '--font-roboto' })
 
 // Executando a função de estilos globais
@@ -19,6 +20,15 @@ export default function App({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
+        <DefaultSeo
+          openGraph={{
+            type: 'website',
+            locale: 'pt_BR',
+            url: 'https://ignite-call/',
+            siteName: 'Ignite Call',
+          }}
+        />
+
         <div className={`${roboto.variable} font-sans`}>
           <Component {...pageProps} />
         </div>
